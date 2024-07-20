@@ -1,0 +1,98 @@
+*** este proyecto se trata de un crear un formulario de logeo y deslogo en django 4.1
+
+
++ crear siempre entorno virtual  = python -m venv django-login
++ entrar al entorno par instalar las librerias = source django-login/Scripts/activate
++ instalar django =  py -m pip install Django==4.1
++ para descargar todas las librerias en un file aparte = pip freeze > requirements.txt
++ par instalar todas las librerias del file  = pip install -r requirements.txt
+
+
++ instalar django  = py -m pip install Django==4.1
++ crear el proyecto = django-admin startproject login
++ entras a la ruta del proyecto y con el file manage.py creas la aplicacion
++ py manage.py startapp core = crear una aplicacion dentro del proyecto logeo
+
++ login tiene la configuracion de nuestro proyecto
++ core es la aplicacion que esta dentro de nuestro proyecto
+
++ tengo que agregar a mi login proyecto la aplicacion que cree osea "core" en settings.py
+
+++ veremos las plantillas
++ en mi aplicacion core es donde puedo crear las plantillas,archivos staticos,etc
++ creare para esta core/templates/core/....html de core base,home,productos par esta aplicacion core
+
+++ veremos las vistas
++ debemos ir a core/views para establecer las vistas de nuestra aplicacion asociadas a nuestras templates
+recibe la informacion del request y se la mando ala plantilla si lo necesita
+
+def Home(request):
+ante esta vista va entrar a la carpeta templates y va buscar la plantilla que le asignamos home.html
+    return render(request,'core/home.html')
+
+
+++ ahora veremos las rutas
++ debo crear el file urls.py en mi app ya que no, se crea solo
++ dentro de mi projecto login el file urls.py incluire este file de core/urls.py de mi app a mi ==> proyecto
+
+from django.urls import path,include
+
+urlpatterns = [
+    lo dejo en raiz y agrego las urls de mi app
+    path('',include('core.urls')),
+    path('admin/', admin.site.urls),
+]
++ luego en mi app jalare las vistas y creare mis rutas para mi aplicacion
+from django.urls import path
+from .views import Home,Products
+
+urlpatterns = [
+    psth('url',name_vista,name='nombre para usarlo en los enlaces a ref')
+    path('',Home,name='home'),
+    path('products/',Products,name='Products'),
+]
+
+++ creamos las plantillas bien organizados para nuestras vistas
++ para usar las urls creadas y usarlo como enlaces usamos asi
+<li><a href={% url 'home' %}>Inicio</a></li>// con el nombre de la urls asignada
+
++ no olvidarse de subir las migraciones
+py manage.py migrate
+
++ para correr el servidor = py manage.py runserver
+
+
+
+***** ahora trabajaremos en los manejos de usuarios con django ya que es mi mayor potencial *******
+
+crear una ruta que se encargara del logeo bajo un modulo especifico de django esta ruta se crea en el proyecto login/urls.py
+path('accounts/',include('django.contrib.auth.urls')
+el logeo lo manejamos desde el projecto pero la vista desde la aplicacion por lo cual
+
+from django.contrib.auth.decorators import login_required
+este metodo lo colocamos como decorador antes de la vista a mostrar osea dira para acceder a esta vista tienes que estas logeado si no F
+
+si no estas logeado entonces no puedes mirar los produtos x lo cual debe aparacer un formulario para ello ya existe la rutha de la plantilla osea registration/login.html x defecto dara este nombre de plantilla y lo creamos igual
+
+
+para probarlo vamos a crear super usuarios
+py manager.py createsuperuser
+jhonael
+jhonael
+
++ recuerda que los nombre de los input tienen que tenemos el mismo de la base de datos de la tabla auth_user
++ ya pudimos ver si nos logeamos o entrar y podemos navegar 
+
+
+// datos curiosos
+accounts/login/ name='login' para esa ruta
+accounts/logout/ name='logout' para esa ruta
+accounts/password_change/ name='password_change' para esa ruta
+accounts/password_reset/ name='password_reset' para esa ruta
+etc...
+
+
+
+requerimientos:
+- solo los usuarios logeados pueden ver los productos
+- cuando entramos a inicio todo chvr pero cuando entramos a productos si no estas logeado entonces deberia aparecer formulario de logeo 

@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h3>login</h3>
+
+
+<form action="" method='post'>
+
+    {% csrf_token %}  
+    {% comment %} estos campos del form {% endcomment %}
+    <input type="text" name="username" placeholder="Nombre del usuario">
+    <br>
+
+    <input type="password" name="password" placeholder="Nombre del contrasenia">
+    <br>
+    <button>Iniciar Session</button>
+</form>
+
+
+
+{% endblock  %}
